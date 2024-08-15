@@ -34,7 +34,7 @@ def create_dataloaders(train_dir: str, test_dir: str, transform: transforms.Comp
 
     return train_dataloader, val_dataloader, test_dataloader, class_names
 
-IMG_SIZE = 224
+IMG_SIZE = 256
 manual_transforms = transforms.Compose([
     transforms.Resize((IMG_SIZE, IMG_SIZE)),
     transforms.RandomHorizontalFlip(),
@@ -57,7 +57,7 @@ print(f'Total number of validation images: {val_images}')
 test_images = len(test_dataloader.dataset)
 print(f'Total number of test images: {test_images}')
 
-model = timm.create_model('swin_tiny_patch4_window7_224', pretrained=True, num_classes=len(class_names))
+model = timm.create_model('swinv2_tiny_window8_256', pretrained=True, num_classes=len(class_names))
 model = model.to(device)
 
 criterion = nn.CrossEntropyLoss()
@@ -203,7 +203,7 @@ plt.title('Accuracy')
 plt.xlabel('Epochs')
 plt.ylabel('Accuracy')
 plt.legend()
-plt.savefig('SWIN-accuracy_loss_plot.png')
+plt.savefig('SWINV2-accuracy_loss_plot.png')
 
 plt.tight_layout()
 plt.show()
@@ -213,7 +213,7 @@ cm = confusion_matrix(y_true, y_pred)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
 disp.plot()
 plt.title('Confusion Matrix')
-plt.savefig('SWINCFM.png')
+plt.savefig('SWINV2CFM.png')
 
 # Classification Report
 report = classification_report(y_true, y_pred, target_names=class_names)
